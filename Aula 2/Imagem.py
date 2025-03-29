@@ -14,21 +14,6 @@ Metodos (Ações):
 
 
 """
-from random import randint as rd
-
-matriz_de_num = []
-
-
-# l = int(input("quantidade de linhas: "))
-# c = int(input("quantiade de colunas: "))
-c = l = 3
-
-for j in range(c):
-    linha = []
-    for i in range(l):
-        # linha.append(int(input(f"E[{j}][{i}]: ")))
-        linha.append(rd(0, 20))
-    matriz_de_num.append(linha)
 
 
 class Imagem:
@@ -38,13 +23,31 @@ class Imagem:
         self.altura = len(matriz)
 
     def bilinear_ampliacao(self):
+        #Inserindo Colunas 
         for i in range(self.altura):
             j = 0
             while j < self.largura:
-                self.matriz[i].insert(j+1, 0)
+                self.matriz[i].insert(j+1, round((self.getPixel(i, j)+self.getPixel(i, j+1))/2))
                 j+=2
 
-        
+        #Inserindo linhas
+        i = 0
+        novas_linhas = []
+        while i < self.altura:
+            for k in range(1, self.largura+1, 2):
+                novas_linhas.append(self.getPixel(i, k))
+                d = self.getPixel(i, k-1) + self.getPixel(i, k+1) + self.getPixel(i+1, k-1) + self.getPixel(i+1, k+1) 
+                d = round(d/4)
+                novas_linhas.append(d)
+            novas_linhas.append(self.getPixel(i, k))
+                
+            self.matriz.insert(i+1, novas_linhas)
+            i+=2
+            novas_linhas=[]
+
+        #Atualizando atributos da imagem
+        self.largura = len(self.matriz[0])
+        self.altura = len(self.matriz)
 
     def bilinear_reducao(self):
         pass
@@ -59,10 +62,5 @@ class Imagem:
         for i in self.matriz:
             print(i)
 
-nova_img = Imagem(matriz=matriz_de_num)
-print("\nMatriz Original")
-nova_img.imprimir_matriz()
-
-print("\nMatriz ampliada em colunas:")
-nova_img.bilinear_ampliacao()
-nova_img.imprimir_matriz()
+    def getPixel(self, i, j):
+        return self.matriz[i][j]
