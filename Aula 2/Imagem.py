@@ -22,6 +22,7 @@ class Imagem:
         self.largura = len(matriz[0])
         self.altura = len(matriz)
 
+
     def bilinear_ampliacao(self):
         #Inserindo Colunas 
         for i in range(self.altura):
@@ -49,8 +50,48 @@ class Imagem:
         self.largura = len(self.matriz[0])
         self.altura = len(self.matriz)
 
+
     def bilinear_reducao(self):
-        pass
+        nova_matriz = []
+
+        for j in range(0, self.altura, 2):
+            nova_linha = []
+            for i in range(0, self.largura, 2):
+                # Verifica se os índices estão dentro dos limites
+                soma = self.getPixel(j, i)
+                count = 1
+
+                if i + 1 < self.largura:  # Verifica se existe coluna à direita
+                    soma += self.getPixel(j, i + 1)
+                    count += 1
+                else:
+                    #Se não existe coluna a direita, ele duplica a coluna atual para a direita
+                    soma += self.getPixel(j, i)
+                    count += 1
+
+                if j + 1 < self.altura:  # Verifica se existe linha abaixo
+                    soma += self.getPixel(j + 1, i)
+                    count += 1
+                else:
+                    #Se não existe linha a baixo, ele duplica a linha atual para baixo
+                    soma += self.getPixel(j, i)
+                    count += 1
+
+                if i + 1 < self.largura and j + 1 < self.altura:  # Verifica diagonal inferior direita
+                    soma += self.getPixel(j + 1, i + 1)
+                    count += 1
+
+                # Calcula a média dos pixels vizinhos
+                elemento = round(soma / count)
+                nova_linha.append(elemento)
+                
+            nova_matriz.append(nova_linha)
+
+        # Atualiza a matriz e os atributos
+        self.matriz = nova_matriz
+        self.altura = len(nova_matriz)
+        self.largura = len(nova_matriz[0])
+
 
     def vizinho_mp_ampliacao(self):
         pass
