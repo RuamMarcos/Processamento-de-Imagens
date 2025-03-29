@@ -14,15 +14,20 @@ Metodos (Ações):
 
 
 """
+from random import randint as rd
+
 matriz_de_num = []
 
-l = int(input("quantidade de linhas: "))
-c = int(input("quantiade de colunas: "))
+
+# l = int(input("quantidade de linhas: "))
+# c = int(input("quantiade de colunas: "))
+c = l = 3
 
 for j in range(c):
     linha = []
     for i in range(l):
-        linha.append(int(input(f"E[{j}][{i}]: ")))
+        # linha.append(int(input(f"E[{j}][{i}]: ")))
+        linha.append(rd(0, 20))
     matriz_de_num.append(linha)
 
 
@@ -39,6 +44,8 @@ class Imagem:
                 self.matriz[i].insert(j+1, 0)
                 j+=2
 
+        
+
     def bilinear_reducao(self):
         pass
 
@@ -53,6 +60,9 @@ class Imagem:
             print(i)
 
 nova_img = Imagem(matriz=matriz_de_num)
+print("\nMatriz Original")
 nova_img.imprimir_matriz()
+
+print("\nMatriz ampliada em colunas:")
 nova_img.bilinear_ampliacao()
 nova_img.imprimir_matriz()
