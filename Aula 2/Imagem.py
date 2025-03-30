@@ -1,22 +1,5 @@
-"""
-
-Classe imagem
-
--> Comtem a matriz de pixels da imagem
--> largura e altura da imagem
-
-Metodos (Ações):
-
--> bilinear_ampliacao: amplia a imagem por interpocao bilinear
--> bilinear_reducao: reduz a imagem por interpocao bilinear
--> vizinho_mp_ampliacao: amplia a imagem atraves da interpolacao do vizinho mais proximo
--> vizinho_mp_reducao: reduz a imagem atraves da interpolacao do vizinho mais proximo
-
-
-"""
-
-
 class Imagem:
+    
     def __init__(self, matriz: list[list[int]]):
         self.matriz = matriz
         self.largura = len(matriz[0])
@@ -93,7 +76,6 @@ class Imagem:
         self.altura = len(nova_matriz)
         self.largura = len(nova_matriz[0])
 
-
     def vizinho_mp_ampliacao(self):
         for i in range(0, self.altura):
             for j in range(0, self.largura,2):
@@ -101,11 +83,45 @@ class Imagem:
 
         for i in range(0, self.altura, 2): 
             self.matriz.insert(i, self.matriz[i])
+        
+        self.altura = len(self.matriz)
+        self.largura = len(self.matriz[0])
                 
 
-
     def vizinho_mp_reducao(self):
-        pass
+        nova_matriz = []
+
+        for i in range(0, self.altura, 2):
+            nova_linha = []
+            for j in range(0, self.largura, 2):
+                # Obtém o pixel atual
+                num = self.getPixel(i, j)
+                count = 1
+
+                # Verifica se existe linha abaixo
+                if i + 1 < self.altura:
+                    num += self.getPixel(i + 1, j)
+                    count += 1
+                # Verifica se existe coluna à direita
+                if j + 1 < self.largura:
+                    num += self.getPixel(i, j + 1)
+                    count += 1
+                # Verifica se existe diagonal inferior direita
+                if i + 1 < self.altura and j + 1 < self.largura:
+                    num += self.getPixel(i + 1, j + 1)
+                    count += 1
+
+                # Calcula a média dos pixels vizinhos
+                num = round(num / count)
+                nova_linha.append(num)
+
+            nova_matriz.append(nova_linha)
+
+        # Atualiza a matriz e os atributos
+        self.matriz = nova_matriz
+        self.altura = len(nova_matriz)
+        self.largura = len(nova_matriz[0])
+
 
     def imprimir_matriz(self):
         for i in self.matriz:
