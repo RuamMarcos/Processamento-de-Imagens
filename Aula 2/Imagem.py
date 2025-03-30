@@ -24,7 +24,7 @@ class Imagem:
 
 
     def bilinear_ampliacao(self):
-        #Inserindo Colunas 
+        #Inserindo Colunas já atribuídas
         for i in range(self.altura):
             j = 0
             while j < self.largura:
@@ -33,18 +33,18 @@ class Imagem:
 
         #Inserindo linhas
         i = 0
-        novas_linhas = []
+        nova_linha = []
         while i < self.altura:
             for k in range(1, self.largura+1, 2):
-                novas_linhas.append(self.getPixel(i, k))
+                nova_linha.append(self.getPixel(i, k))
                 d = self.getPixel(i, k-1) + self.getPixel(i, k+1) + self.getPixel(i+1, k-1) + self.getPixel(i+1, k+1) 
                 d = round(d/4)
-                novas_linhas.append(d)
-            novas_linhas.append(self.getPixel(i, k))
+                nova_linha.append(d)
+            nova_linha.append(self.getPixel(i, k))
                 
-            self.matriz.insert(i+1, novas_linhas)
+            self.matriz.insert(i+1, nova_linha)
             i+=2
-            novas_linhas=[]
+            nova_linha=[]
 
         #Atualizando atributos da imagem
         self.largura = len(self.matriz[0])
@@ -52,6 +52,7 @@ class Imagem:
 
 
     def bilinear_reducao(self):
+        # Criando a nova matriz, essa vai ser uma versão reduzida da atual
         nova_matriz = []
 
         for j in range(0, self.altura, 2):
@@ -94,7 +95,14 @@ class Imagem:
 
 
     def vizinho_mp_ampliacao(self):
-        pass
+        for i in range(0, self.altura):
+            for j in range(0, self.largura,2):
+                self.matriz[i].insert(j+1, self.getPixel(i, j))
+
+        for i in range(0, self.altura, 2): 
+            self.matriz.insert(i, self.matriz[i])
+                
+
 
     def vizinho_mp_reducao(self):
         pass

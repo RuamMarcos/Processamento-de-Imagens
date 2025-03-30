@@ -24,7 +24,7 @@ print(f"Altura: {nova_img.altura}")
 print(f"Largura: {nova_img.largura}")
 
 print("\nMatriz reduzida:")
-nova_img.bilinear_reducao()
+nova_img.vizinho_mp_ampliacao()
 nova_img.imprimir_matriz()
 print(f"Altura: {nova_img.altura}")
 print(f"Largura: {nova_img.largura}")
