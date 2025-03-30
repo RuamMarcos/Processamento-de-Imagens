@@ -1,9 +1,13 @@
+from PIL import Image
+import numpy as np
+
 class Imagem:
-    
-    def __init__(self, matriz: list[list[int]]):
-        self.matriz = matriz
-        self.largura = len(matriz[0])
-        self.altura = len(matriz)
+
+    def __init__(self, nome_arquivo: str):
+        imagem = Image.open(nome_arquivo)
+        self.matriz = np.array(imagem).tolist()  # Converter para lista de listas
+        self.altura = len(self.matriz)
+        self.largura = len(self.matriz[0])
 
 
     def bilinear_ampliacao(self):
@@ -76,6 +80,7 @@ class Imagem:
         self.altura = len(nova_matriz)
         self.largura = len(nova_matriz[0])
 
+
     def vizinho_mp_ampliacao(self):
         for i in range(0, self.altura):
             for j in range(0, self.largura,2):
@@ -121,6 +126,12 @@ class Imagem:
         self.matriz = nova_matriz
         self.altura = len(nova_matriz)
         self.largura = len(nova_matriz[0])
+
+
+    def salvar(self, nome_arquivo: str):
+        array = np.array(self.matriz, dtype=np.uint8)  
+        imagem = Image.fromarray(array) 
+        imagem.save(nome_arquivo) 
 
 
     def imprimir_matriz(self):
